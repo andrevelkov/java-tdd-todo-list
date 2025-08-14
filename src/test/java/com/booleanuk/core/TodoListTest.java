@@ -11,44 +11,46 @@ class TodoListTest {
 
     public void loadTasks() {
         testmap = new HashMap<>();
-        testmap.put("Task1", false);
-        testmap.put("Task2", false);
-        testmap.put("Task3", true);
-        testmap.put("Task4", false);
-        testmap.put("Task5", true);
+        testmap.put("task1", false);
+        testmap.put("task2", false);
+        testmap.put("task3", true);
+        testmap.put("task4", false);
+        testmap.put("task5", true);
+    }
+
+    @Test
+    public void addTaskThatDoesNotExist() {
+        loadTasks();
+        TodoList list = new TodoList(testmap);
+
+        Assertions.assertFalse(list.add("Task1"));
+        Assertions.assertFalse(list.add("Task2"));
+        Assertions.assertFalse(list.add("task2"));
+        Assertions.assertTrue(list.add("Task10"));
+        Assertions.assertFalse(list.add("Task5"));
+        Assertions.assertTrue(list.add("Task20"));
+        Assertions.assertFalse(list.add("  "));
     }
 
     @Test
     public void addTaskThatAlreadyExists() {
         loadTasks();
         TodoList list = new TodoList(testmap);
-
         Assertions.assertFalse(list.add("Task1"));
-        Assertions.assertFalse(list.add("Task2"));
-        Assertions.assertTrue(list.add("Task1"));
-        Assertions.assertFalse(list.add("Task5"));
-        Assertions.assertTrue(list.add("Task2"));
-    }
-
-    @Test
-    public void addTaskWithNameWhichAlreadyExists() {
-        loadTasks();
-        TodoList list = new TodoList(testmap);
-        Assertions.assertTrue(list.add("Task1"));
-        Assertions.assertFalse(list.add("Task11"));
-        Assertions.assertTrue(list.add("task1")); // Case-sensitive
+        Assertions.assertTrue(list.add("Task11"));
+        Assertions.assertFalse(list.add("task1")); // Case-sensitive
         Assertions.assertFalse(list.add(" "));
     }
 
     @Test
     public void getAllTasksReturnsMapOrEmptyMapIfNoContent() {
-        // Test on Empty
         TodoList list = new TodoList(HashMap.newHashMap(0));
-        Assertions.assertEquals(0, list.getAll().size());
+        Assertions.assertEquals(0, list.getAll().size()); // Test on Empty
+
         loadTasks();
         TodoList list2 = new TodoList(testmap);
         Assertions.assertEquals(5, list2.getAll().size());
-        list.add("item6");
+        list2.add("item6");
         Assertions.assertEquals(6, list2.getAll().size());
     }
 
@@ -69,7 +71,7 @@ class TodoListTest {
 
         Assertions.assertEquals(3, list.getIncompleteTasks().size());
         list.add("task25");
-        Assertions.assertEquals(4, list.getCompletedTasks().size());
+        Assertions.assertEquals(4, list.getIncompleteTasks().size());
     }
 
     @Test
@@ -153,6 +155,5 @@ class TodoListTest {
 
         Assertions.assertEquals(List.of("d", "c", "b", "a"), list.getAllDescending());
     }
-
 
 }
