@@ -15,8 +15,7 @@ public class TodoList {
     public Boolean add(String task) {
         if (task.toLowerCase().trim().isEmpty()) {
             return false;
-        }
-        if (todoMap.containsKey(task.toLowerCase().trim())) {
+        } else if (todoMap.containsKey(task.toLowerCase().trim())) {
             return false;
         }
 
@@ -51,8 +50,7 @@ public class TodoList {
     public Boolean toggleStatus(String taskName) {
         for (Map.Entry<String, Boolean> entry : todoMap.entrySet())
             if (entry.getKey().equals(taskName.toLowerCase().trim())) {
-                boolean value = entry.getValue();
-                entry.setValue(!value);
+                entry.setValue(!entry.getValue());
                 return true;
             }
         return false;
@@ -77,7 +75,6 @@ public class TodoList {
     public ArrayList<String> getAllAscending() {
         ArrayList<String> keyList = new ArrayList<>(todoMap.keySet());
         keyList.sort(null);
-
         return keyList;
     }
 
