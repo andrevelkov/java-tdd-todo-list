@@ -1,6 +1,7 @@
 package com.booleanuk.extension;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class TodoListExtension {
@@ -18,20 +19,34 @@ public class TodoListExtension {
     }
 
     public Task getTaskByID(int id) {
-
+        for (Task task : taskList) {
+            if (task.getId() == id) {
+                return task;
+            }
+        }
         return null;
     }
 
     public void updateTask(int id, String newName) {
-
+        for (Task task : taskList)
+            if (task.getId() == id)
+                task.setName(newName);
     }
 
     public void changeStatusWithId(int id) {
-
+        taskList.stream()
+                .filter(task -> task.getId() == id)
+                .findFirst().map(task -> {task.toggleStatus();
+                    return null;
+                });
     }
 
-    public Task getTaskCreationTime(String taskName) {
-
+    public Date getTaskCreationTime(String taskName) {
+        for (Task task : taskList) {
+            if (task.getName().equals(taskName)) {
+                return task.getCreationTime();
+            }
+        }
         return null;
     }
 }
